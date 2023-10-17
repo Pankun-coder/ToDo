@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const task = z.object({
+const task = z.object({
   id: z.number(),
   label: z.string(),
   difficulty: z.number(),
@@ -8,3 +8,5 @@ export const task = z.object({
   order: z.number(),
   status: z.union([z.literal("completed"), z.literal("toDo")]),
 });
+
+export default task;
