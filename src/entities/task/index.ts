@@ -1,12 +1,21 @@
 import z from "zod";
 
-const task = z.object({
-  id: z.number(),
+const taskBody = z.object({
   label: z.string(),
-  difficulty: z.number(),
-  impact: z.number(),
-  order: z.number(),
+  difficulty: z.number().optional(),
+  impact: z.number().optional(),
   status: z.union([z.literal("completed"), z.literal("toDo")]),
 });
+
+export type TaskBody = z.infer<typeof taskBody>;
+
+const task = taskBody.merge(
+  z.object({
+    id: z.string(),
+    order: z.number(),
+  }),
+);
+
+export type Task = z.infer<typeof task>;
 
 export default task;
