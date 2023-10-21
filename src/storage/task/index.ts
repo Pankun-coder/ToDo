@@ -51,13 +51,13 @@ export const deleteTask = (id: string) => {
   saveInLocalStorace(filtered);
 };
 
-export const updateTask = (id: string, taskBody: Partial<Omit<Task, "id">>) => {
+export const updateTask = (id: string, body: Omit<Task, "id">) => {
   const tasks = getFromLocalStorage();
   const targetTask = tasks.find((task) => task.id === id);
   if (!targetTask) {
     throw new Error("task not found");
   }
   const others = tasks.filter((task) => task.id !== id);
-  const updatedTask = { ...targetTask, ...taskBody };
+  const updatedTask = { id, ...body };
   saveInLocalStorace([...others, updatedTask]);
 };
