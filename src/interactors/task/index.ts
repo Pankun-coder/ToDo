@@ -54,9 +54,21 @@ export const useTask = (id: string, repository: TaskRepository) => {
       throw new Error("data not ready");
     }
     const tasks = repository.bulkGet();
-    tasks.forEach((task) => {
-      if (task.order >= index)
-        repository.update(task.id, { ...task, order: task.order + 1 });
+    const { affectedTasks, direction } = (() => {
+      if (index < data.order) {
+        const affectedTasks = tasks.filter(
+          (task) => index <= task.order && task.order < data.order,
+        );
+        return { affectedTasks, direction: 1 };
+      } else {
+        const affectedTasks = tasks.filter(
+          (task) => data.order < task.order && task.order <= index,
+        );
+        return { affectedTasks, direction: -1 };
+      }
+    })();
+    affectedTasks.forEach((task) => {
+      repository.update(task.id, { ...task, order: task.order + direction });
     });
     repository.update(data.id, { ...data, order: index });
     return id;
