@@ -22,8 +22,9 @@ export const useTasks = (repository: TaskRepository) => {
 };
 
 export const useTask = (id: string, repository: TaskRepository) => {
-  const { data } = useSWR([SWR_KEY, repository, id], ([, repo, taskId]) =>
-    repo.get(taskId),
+  const { data, error } = useSWR(
+    [SWR_KEY, repository, id],
+    ([, repo, taskId]) => repo.get(taskId),
   );
 
   const { mutate } = useSWRConfig();
@@ -67,7 +68,7 @@ export const useTask = (id: string, repository: TaskRepository) => {
   };
 
   return {
-    data,
+    data: error ? undefined : data,
     markAsDone,
     markAsNotCompleted,
     insertTo,
