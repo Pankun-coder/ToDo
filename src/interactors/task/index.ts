@@ -71,11 +71,13 @@ export const useTask = (id: string, repository: TaskRepository) => {
       repository.update(task.id, { ...task, order: task.order + direction });
     });
     repository.update(data.id, { ...data, order: index });
+    globalMutate();
     return id;
   };
 
   const physicalDelete = async () => {
     repository.physicalDelete(id);
+    globalMutate();
     return id;
   };
 
