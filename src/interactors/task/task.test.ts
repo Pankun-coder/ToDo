@@ -116,9 +116,9 @@ describe("useTask interactor", () => {
     tasksResult.current.data?.forEach((task, i) => {
       expect(task.order).toEqual(i);
     });
-    const id = tasksResult.current.data![0].id;
+    const { id } = tasksResult.current.data![0];
     // mock repository registers label as id
-    const { result: result } = renderHook(() => useTask(id, mockRepository));
+    const { result } = renderHook(() => useTask(id, mockRepository));
     await waitFor(() => expect(result.current.data).toBeTruthy());
     await act(() => result.current.insertTo(2));
     expect(result.current.data?.order).toBe(2);
@@ -130,7 +130,7 @@ describe("useTask interactor", () => {
     ];
     tasksResult.current.data?.forEach((data) => {
       const { order: expectation } = expectationTable.find(
-        ({ id }) => id === data.id,
+        (row) => row.id === data.id,
       )!;
       expect(data.order).toBe(expectation);
     });
@@ -152,7 +152,7 @@ describe("useTask interactor", () => {
     );
 
     expect(tasksResult.current.data?.length).toBe(3);
-    const id = tasksResult.current.data![0].id;
+    const { id } = tasksResult.current.data![0];
     // mock repository registers label as id
     const { result } = renderHook(() => useTask(id, mockRepository));
     await waitFor(() => expect(result.current.data).toBeTruthy());
