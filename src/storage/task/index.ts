@@ -14,9 +14,11 @@ const getFromLocalStorage = () => {
   const parsed = z.array(zodTask).parse(tasks);
   return parsed;
 };
+
 const saveInLocalStorace = (tasks: Task[]) => {
   localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks));
 };
+
 export const taskStorage: TaskRepository = {
   get: (id: string) => {
     const tasks = getFromLocalStorage();
