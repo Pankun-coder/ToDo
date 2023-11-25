@@ -3,7 +3,7 @@ import { useTasks, useTask } from ".";
 import { Task, TaskBody } from "../../entities/task";
 import TaskRepository from "../../repositories/task";
 
-export class MockTaskRepository implements TaskRepository {
+class MockTaskRepository implements TaskRepository {
   tasks: Task[] = [];
 
   get(id: string) {
