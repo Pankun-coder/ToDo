@@ -3,7 +3,7 @@ import { useTasks, useTask } from ".";
 import { Task, TaskBody } from "../../entities/task";
 import TaskRepository from "../../repositories/task";
 
-export class MockTaskRepository implements TaskRepository {
+class MockTaskRepository implements TaskRepository {
   tasks: Task[] = [];
 
   get(id: string) {
@@ -76,7 +76,7 @@ describe("useTask interactor", () => {
     expect(result.current.data!.label).toBe(testTask.label);
     expect(result.current.data!.status).toBe(testTask.status);
 
-    await act(async () => await result.current.markAsDone());
+    await act(() => result.current.markAsDone());
     expect(result.current.data?.status).toBe("completed");
   });
 
@@ -93,7 +93,7 @@ describe("useTask interactor", () => {
     expect(result.current.data!.label).toBe(testTask.label);
     expect(result.current.data!.status).toBe(testTask.status);
 
-    await act(async () => await result.current.markAsNotCompleted());
+    await act(() => result.current.markAsNotCompleted());
     expect(result.current.data!.status).toBe("toDo");
   });
 
@@ -106,22 +106,21 @@ describe("useTask interactor", () => {
     ];
     const { result: tasksResult } = renderHook(() => useTasks(mockRepository));
 
-    await act(
-      async () =>
-        await Promise.all(
-          testTasks.map(async (task) => tasksResult.current.create(task)),
-        ),
+    await act(() =>
+      Promise.all(
+        testTasks.map(async (task) => tasksResult.current.create(task)),
+      ),
     );
 
     expect(tasksResult.current.data?.length).toBe(3);
     tasksResult.current.data?.forEach((task, i) => {
       expect(task.order).toEqual(i);
     });
-    const id = tasksResult.current.data![0].id;
+    const { id } = tasksResult.current.data![0];
     // mock repository registers label as id
-    const { result: result } = renderHook(() => useTask(id, mockRepository));
+    const { result } = renderHook(() => useTask(id, mockRepository));
     await waitFor(() => expect(result.current.data).toBeTruthy());
-    await act(async () => await result.current.insertTo(2));
+    await act(() => result.current.insertTo(2));
     expect(result.current.data?.order).toBe(2);
 
     const expectationTable = [
@@ -131,7 +130,7 @@ describe("useTask interactor", () => {
     ];
     tasksResult.current.data?.forEach((data) => {
       const { order: expectation } = expectationTable.find(
-        ({ id }) => id === data.id,
+        (row) => row.id === data.id,
       )!;
       expect(data.order).toBe(expectation);
     });
@@ -146,19 +145,18 @@ describe("useTask interactor", () => {
     ];
     const { result: tasksResult } = renderHook(() => useTasks(mockRepository));
 
-    await act(
-      async () =>
-        await Promise.all(
-          testTasks.map(async (task) => tasksResult.current.create(task)),
-        ),
+    await act(() =>
+      Promise.all(
+        testTasks.map(async (task) => tasksResult.current.create(task)),
+      ),
     );
 
     expect(tasksResult.current.data?.length).toBe(3);
-    const id = tasksResult.current.data![0].id;
+    const { id } = tasksResult.current.data![0];
     // mock repository registers label as id
     const { result } = renderHook(() => useTask(id, mockRepository));
     await waitFor(() => expect(result.current.data).toBeTruthy());
-    await act(async () => await result.current.physicalDelete());
+    await act(() => result.current.physicalDelete());
     await waitFor(() => expect(result.current.data).toBe(undefined));
     expect(tasksResult.current.data?.length).toBe(2);
   });
