@@ -56,15 +56,15 @@ export const useTask = (id: string, repository: TaskRepository) => {
     const tasks = repository.bulkGet();
     const { affectedTasks, direction } = (() => {
       if (index < data.order) {
-        const affectedTasks = tasks.filter(
+        const affected = tasks.filter(
           (task) => index <= task.order && task.order < data.order,
         );
-        return { affectedTasks, direction: 1 };
+        return { affectedTasks: affected, direction: 1 };
       } else {
-        const affectedTasks = tasks.filter(
+        const affected = tasks.filter(
           (task) => data.order < task.order && task.order <= index,
         );
-        return { affectedTasks, direction: -1 };
+        return { affectedTasks: affected, direction: -1 };
       }
     })();
     affectedTasks.forEach((task) => {
