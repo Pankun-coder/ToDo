@@ -5,66 +5,66 @@ import TaskRepository from "../../repositories/task";
 
 const TASKS_STORAGE_KEY = "tasks";
 
-export class taskStorage implements TaskRepository {
-  #getFromLocalStorage = () => {
-    const strageItem = localStorage.getItem(TASKS_STORAGE_KEY);
-    if (strageItem === null) {
-      return [];
-    }
-    const tasks = JSON.parse(strageItem);
-    const parsed = z.array(zodTask).parse(tasks);
-    return parsed;
-  };
-
-  #saveInLocalStorace = (tasks: Task[]) => {
-    localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks));
-  };
-
-  get = (id: string) => {
-    const tasks = this.#getFromLocalStorage();
+const getFromLocalStorage = () => {
+  const strageItem = localStorage.getItem(TASKS_STORAGE_KEY);
+  if (strageItem === null) {
+    return [];
+  }
+  const tasks = JSON.parse(strageItem);
+  const parsed = z.array(zodTask).parse(tasks);
+  return parsed;
+};
+const saveInLocalStorace = (tasks: Task[]) => {
+  localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks));
+};
+export const taskStorage: TaskRepository = {
+  get: (id: string) => {
+    const tasks = getFromLocalStorage();
     const targetTask = tasks.find((task) => task.id === id);
     if (typeof targetTask === "undefined") {
       throw new Error("task not found");
     }
     return targetTask;
-  };
+  },
 
-  bulkGet = () => {
-    const tasks = this.#getFromLocalStorage();
+  bulkGet: () => {
+    const tasks = getFromLocalStorage();
     return tasks.sort((a, b) => (a.order > b.order ? 1 : -1));
-  };
+  },
 
-  create = (task: TaskBody) => {
-    const tasks = this.#getFromLocalStorage();
+  create: (task: TaskBody) => {
+    const tasks = getFromLocalStorage();
     const id = uuid();
     const newTask: Task = {
       ...task,
       id,
       order: tasks.length,
     };
-    this.#saveInLocalStorace([...tasks, newTask]);
+    saveInLocalStorace([...tasks, newTask]);
     return id;
-  };
+  },
 
-  physicalDelete = (id: string) => {
-    const tasks = this.#getFromLocalStorage();
+  physicalDelete: (id: string) => {
+    const tasks = getFromLocalStorage();
     const filtered = tasks.filter((task) => task.id !== id);
     if (!(tasks.length > filtered.length)) {
       throw new Error("Task not found");
     }
-    this.#saveInLocalStorace(filtered);
+    saveInLocalStorace(filtered);
     return id;
-  };
+  },
 
-  update = (id: string, body: Omit<Task, "id">) => {
-    const tasks = this.#getFromLocalStorage();
+  update: (id: string, body: Omit<Task, "id">) => {
+    const tasks = getFromLocalStorage();
     const targetTask = tasks.find((task) => task.id === id);
     if (!targetTask) {
       throw new Error("task not found");
     }
     const others = tasks.filter((task) => task.id !== id);
     const updatedTask = { id, ...body };
-    this.#saveInLocalStorace([...others, updatedTask]);
+    saveInLocalStorace([...others, updatedTask]);
     return id;
-  };
-}
+  },
+};
+
+export default getFromLocalStorage;
