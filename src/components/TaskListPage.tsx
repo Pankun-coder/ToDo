@@ -1,8 +1,8 @@
 import React from "react";
+import Box from "@mui/material/Box";
 import { useTasks } from "../interactors/task";
 import { taskStorage } from "../storage/task";
 import DraggableTask from "./DraggableTask";
-import Box from "@mui/material/Box";
 
 export default function TaskListPage() {
   const { data: tasks } = useTasks(taskStorage);
