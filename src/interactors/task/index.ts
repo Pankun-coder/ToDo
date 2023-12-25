@@ -15,8 +15,10 @@ export const useTasks = (repository: TaskRepository) => {
     return createdTaskId;
   };
 
+  const sortedData = data?.sort((a, b) => (a.order > b.order ? 1 : -1));
+
   return {
-    data,
+    data: sortedData,
     create,
   };
 };
