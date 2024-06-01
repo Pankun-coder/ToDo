@@ -3,9 +3,10 @@ name: CI
 on: [push]
 
 jobs:
-  jobName:
+  CI:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: yarn install
       - run: yarn test
+      - run: yarn lint
