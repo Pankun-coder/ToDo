@@ -22,7 +22,13 @@ class MockTaskRepository implements TaskRepository {
     const newId = body.label;
     this.tasks = [
       ...this.tasks,
-      { id: newId, order: this.tasks.length, ...body },
+      {
+        id: newId,
+        order: this.tasks.length,
+        created: new Date(),
+        updated: new Date(),
+        ...body,
+      },
     ];
     return newId;
   }
@@ -33,7 +39,7 @@ class MockTaskRepository implements TaskRepository {
       throw new Error("task not found");
     }
     const others = this.tasks.filter((task) => task.id !== id);
-    this.tasks = [...others, { ...body, id }];
+    this.tasks = [...others, { ...body, id, updated: new Date() }];
     return id;
   }
 

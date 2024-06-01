@@ -13,6 +13,8 @@ const task = taskBody.merge(
   z.object({
     id: z.string(),
     order: z.number(),
+    created: z.date(),
+    updated: z.date(),
   }),
 );
 
