@@ -1,0 +1,12 @@
+name: CI
+
+on: pull_request
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: yarn install
+      - run: yarn test
+      - run: yarn lint

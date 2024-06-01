@@ -1,9 +1,9 @@
-//@vitest-environment jsdom
+// @vitest-environment jsdom
 import { renderHook, waitFor, act } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
 import { useTasks, useTask } from ".";
 import { Task, TaskBody } from "../../entities/task";
 import TaskRepository from "../../repositories/task";
-import { describe, it, expect } from "vitest";
 
 class MockTaskRepository implements TaskRepository {
   tasks: Task[] = [];

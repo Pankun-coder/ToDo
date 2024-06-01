@@ -33,7 +33,11 @@ export default function DraggableTask({ task }: Props) {
   }));
 
   const toggleStatus = () => {
-    task.status === "completed" ? markAsNotCompleted() : markAsDone();
+    if (task.status === "completed") {
+      markAsNotCompleted();
+    } else {
+      markAsDone();
+    }
   };
 
   return (
