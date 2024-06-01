@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Card, Input } from "@mui/material";
+import { Card, Input, IconButton } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import { useTasks } from "../interactors/task";
@@ -23,7 +23,9 @@ export default function TaskCreator() {
         alignItems: "center",
       }}
     >
-      <CheckCircleOutlineIcon />
+      <IconButton disabled>
+        <CheckCircleOutlineIcon />
+      </IconButton>
       <DragIndicator />
       <Input inputRef={inputRef} onBlur={onBlur} />
     </Card>

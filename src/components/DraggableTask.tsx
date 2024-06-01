@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "@mui/material";
+import { Card, IconButton } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import { useDrag, useDrop } from "react-dnd";
@@ -12,7 +12,10 @@ type Props = {
 };
 
 export default function DraggableTask({ task }: Props) {
-  const { insertTo } = useTask(task.id, taskStorage);
+  const { insertTo, markAsDone, markAsNotCompleted } = useTask(
+    task.id,
+    taskStorage,
+  );
   const [, dragRef] = useDrag(() => ({
     type: "task",
     item: { insertDraggedItem: insertTo },
@@ -29,6 +32,10 @@ export default function DraggableTask({ task }: Props) {
     },
   }));
 
+  const toggleStatus = () => {
+    task.status === "completed" ? markAsNotCompleted() : markAsDone();
+  };
+
   return (
     <Card
       ref={(el) => dropRef(dragRef(el))}
@@ -37,9 +44,12 @@ export default function DraggableTask({ task }: Props) {
         height: "32px",
         backgroundColor: "background.paper",
         alignItems: "center",
+        opacity: task.status === "completed" ? 0.3 : 1,
       }}
     >
-      <CheckCircleOutlineIcon />
+      <IconButton onClick={toggleStatus}>
+        <CheckCircleOutlineIcon />
+      </IconButton>
       <DragIndicator />
       {task.label}
     </Card>
