@@ -14,7 +14,7 @@ import TaskListPage from "./components/TaskListPage";
 function App() {
   return (
     <DndProvider backend={HTML5Backend}>
-      <TaskListPage />;
+      <TaskListPage />
     </DndProvider>
   );
 }
