@@ -16,21 +16,27 @@ export default function DraggableTask({ task }: Props) {
     task.id,
     taskStorage,
   );
-  const [, dragRef] = useDrag(() => ({
-    type: "task",
-    item: { insertDraggedItem: insertTo },
-  }));
+  const [, dragRef] = useDrag(
+    () => ({
+      type: "task",
+      item: { insertDraggedItem: insertTo },
+    }),
+    [insertTo],
+  );
 
-  const [, dropRef] = useDrop(() => ({
-    accept: "task",
-    drop: async ({
-      insertDraggedItem,
-    }: {
-      insertDraggedItem: (index: number) => Promise<string>;
-    }) => {
-      await insertDraggedItem(task.order);
-    },
-  }));
+  const [, dropRef] = useDrop(
+    () => ({
+      accept: "task",
+      drop: async ({
+        insertDraggedItem,
+      }: {
+        insertDraggedItem: (index: number) => Promise<string>;
+      }) => {
+        await insertDraggedItem(task.order);
+      },
+    }),
+    [task.order],
+  );
 
   const toggleStatus = () => {
     if (task.status === "completed") {
