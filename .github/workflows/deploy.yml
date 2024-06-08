@@ -1,0 +1,26 @@
+name: Deploy to Github pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: "./.node-version"
+      - run: yarn install
+      - run: yarn test
+      - run: yarn lint
+      - name: build
+      - run: yarn build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./build"
+
+      - uses: actions/deploy-pages@v4
