@@ -1,12 +1,11 @@
 import React from "react";
-import { Card, IconButton } from "@mui/material";
+import { Card, IconButton, useTheme } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import { useDrag, useDrop } from "react-dnd";
 import { Task } from "../entities/task";
 import { useTask } from "../interactors/task";
 import { taskStorage } from "../storage/task";
-import { useTheme } from "@mui/material";
 
 type Props = {
   task: Task;

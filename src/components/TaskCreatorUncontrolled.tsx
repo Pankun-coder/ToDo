@@ -1,10 +1,9 @@
 import React, { useRef } from "react";
-import { Card, IconButton } from "@mui/material";
+import { Card, IconButton, useTheme } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import DragIndicator from "@mui/icons-material/DragIndicator";
 import { useTasks } from "../interactors/task";
 import { taskStorage } from "../storage/task";
-import { useTheme } from "@mui/material";
 
 export default function TaskCreator() {
   const inputRef = useRef<HTMLInputElement>(null);
