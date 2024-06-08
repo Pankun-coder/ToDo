@@ -6,12 +6,14 @@ import { useDrag, useDrop } from "react-dnd";
 import { Task } from "../entities/task";
 import { useTask } from "../interactors/task";
 import { taskStorage } from "../storage/task";
+import { useTheme } from "@mui/material";
 
 type Props = {
   task: Task;
 };
 
 export default function DraggableTask({ task }: Props) {
+  const theme = useTheme();
   const { insertTo, markAsDone, markAsNotCompleted } = useTask(
     task.id,
     taskStorage,
@@ -51,8 +53,8 @@ export default function DraggableTask({ task }: Props) {
       ref={(el) => dropRef(dragRef(el))}
       sx={{
         display: "flex",
-        height: "32px",
-        backgroundColor: "background.paper",
+        height: "40px",
+        backgroundColor: "grey.100",
         alignItems: "center",
         opacity: task.status === "completed" ? 0.3 : 1,
       }}
@@ -61,7 +63,7 @@ export default function DraggableTask({ task }: Props) {
         <CheckCircleOutlineIcon />
       </IconButton>
       <DragIndicator />
-      {task.label}
+      <span style={{ ...theme.typography.body1 }}>{task.label}</span>
     </Card>
   );
 }
