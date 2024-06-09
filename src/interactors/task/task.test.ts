@@ -1,4 +1,4 @@
-// @vitest-environment jsdom
+// @vitest-environment happy-dom
 import { renderHook, waitFor, act } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { useTasks, useTask } from ".";
