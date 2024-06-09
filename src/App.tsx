@@ -5,7 +5,6 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import "./App.css";
 import TaskListPage from "./components/TaskListPage";
 
 // TODO: https://qiita.com/hiyamamoto/items/d83cf4ccfcfa886a0ba8
